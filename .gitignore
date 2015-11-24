@@ -29,3 +29,5 @@ pip-log.txt
 /config.pyc
 /config.py
 /iam.policy
+
+/aws-makesnapshots.sh

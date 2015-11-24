@@ -142,8 +142,11 @@ def set_resource_tags(resource, tags):
             resource.add_tag(tag_key, tag_value)
 
 # Get all the volumes that match the tag criteria
-print 'Finding volumes that match the requested tag ({ "tag:%(tag_name)s": "%(tag_value)s" })' % config
-vols = conn.get_all_volumes(filters={ 'tag:' + config['tag_name']: config['tag_value'] })
+#Manually replaced, Holger Drewes, 2015-11-23
+#print 'Finding volumes that match the requested tag ({ "tag:%(tag_name)s": "%(tag_value)s" })' % config
+#vols = conn.get_all_volumes(filters={ 'tag:' + config['tag_name']: config['tag_value'] })
+print 'Selecting all the volumes, ignoring tag setting'
+vols = conn.get_all_volumes()
 
 for vol in vols:
     try:

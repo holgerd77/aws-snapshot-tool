@@ -236,7 +236,8 @@ if sns_arn:
     if errmsg or total_creates == 0:
         print "Sending snapshot error mail"
         sns.publish(sns_arn, 'Error in processing volumes: ' + errmsg, 'Error with AWS Snapshot')
-    #sns.publish(sns_arn, message, 'Finished AWS snapshotting')
+    elif period == 'week':
+        sns.publish(sns_arn, message, 'Finished AWS snapshotting (week)')
 
 logging.info(result)
 

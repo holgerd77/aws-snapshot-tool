@@ -128,7 +128,7 @@ def get_resource_tags(resource_id):
         for tag in tags:
             # Tags starting with 'aws:' are reserved for internal use
             if not tag.name.startswith('aws:'):
-                resource_tags[tag.name] = tag.value
+                resource_tags[tag.name] = tag.value + ' ' +  datetime.today().strftime('%Y-%m-%d')
     return resource_tags
 
 def set_resource_tags(resource, tags):
@@ -153,11 +153,10 @@ for vol in vols:
         count_total += 1
         logging.info(vol)
         tags_volume = get_resource_tags(vol.id)
-        description = '%(period)s_snapshot %(vol_id)s_%(period)s_%(date_suffix)s by snapshot script at %(date)s' % {
+        description = '%(period)s_%(date_suffix)s_snapshot %(vol_id)s by snapshot script' % {
             'period': period,
             'vol_id': vol.id,
-            'date_suffix': date_suffix,
-            'date': datetime.today().strftime('%d-%m-%Y %H:%M:%S')
+            'date_suffix': date_suffix
         }
         try:
             current_snap = vol.create_snapshot(description)
@@ -175,11 +174,11 @@ for vol in vols:
         deletelist = []
         for snap in snapshots:
             sndesc = snap.description
-            if (sndesc.startswith('week_snapshot') and period == 'week'):
+            if (sndesc.startswith('week_') and period == 'week'):
                 deletelist.append(snap)
-            elif (sndesc.startswith('day_snapshot') and period == 'day'):
+            elif (sndesc.startswith('day_') and period == 'day'):
                 deletelist.append(snap)
-            elif (sndesc.startswith('month_snapshot') and period == 'month'):
+            elif (sndesc.startswith('month_') and period == 'month'):
                 deletelist.append(snap)
             else:
                 logging.info('     Skipping, not added to deletelist: ' + sndesc)

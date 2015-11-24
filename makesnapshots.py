@@ -231,11 +231,12 @@ message += "\nTotal snapshots deleted: " + str(total_deletes) + "\n"
 print '\n' + message + '\n'
 print result
 
-# SNS reporting
+# SNS reporting, manually added total_creates check, commented out success mailing
 if sns_arn:
-    if errmsg:
+    if errmsg or total_creates == 0:
+        print "Sending snapshot error mail"
         sns.publish(sns_arn, 'Error in processing volumes: ' + errmsg, 'Error with AWS Snapshot')
-    sns.publish(sns_arn, message, 'Finished AWS snapshotting')
+    #sns.publish(sns_arn, message, 'Finished AWS snapshotting')
 
 logging.info(result)
 
